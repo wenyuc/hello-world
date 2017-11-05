@@ -1,0 +1,223 @@
+git bash
+
+git config --global user.name "wenyu"
+
+git config --global user.email chenwenyu077@live.com
+
+git config --global color.ui auto
+#enable helpful colorization of command line output
+
+ls -la
+.gitconfig
+
+cat .gitconfig
+
+2. Repository
+简单理解为一个目录，这个目录里面的所有文件都可以被Git管理起来。
+
+2.1 Create a Repository
+cd f:/www
+mkdir wenyuGit
+cd wenyuGit
+pwd
+ls -la
+>>> 
+git init
+>>> Initialized empty Git Repository in F:/www/wenyuGit/.git
+ls -la
+>>> ./
+>>> ../
+>>> .git/
+
+目录下会有一个名叫.git 的目录被创建，这意味着一个仓库被初始化了。
+可以进入到.git目录查看下有哪些内容。
+
+2.2 Use Repository
+工作区：就是你在电脑上看到的目录，比如目录下wenyuGit里的文件(.git隐藏目录版本库除外)。
+或者以后需要再新建的目录文件等等都属于工作区范畴。
+
+版本库, 又称本地代码库（Repository）: 工作区有一个隐藏目录.git,这个不属于工作区，
+这是版本库。其中版本库里面存了很多东西，最重要的是本地缓存区，还有Git为我们自动
+创建了第一个分支master,以及指向master的一个指针HEAD.
+
+使用Git提交文件到本地代码库（版本库）有两步:
+ i. 使用git add把文件添加进去，就是把文件添加到本地缓存区；
+ii. 使用 git commit提交更改，将暂存区的所有内容提交到当前分支上。
+
+2.3 git的基本流程如下：
+创建或修改文件
+使用git add命令添加新创建或修改的文件到本地缓存区(Index);
+使用git commit提交到本地代码库（可选，有的时候并没有可以同步的远端代码库）使用git push
+命令将本地代码库同步到远端代码库。
+
+vi wenyu.txt
+>>> Hello World
+vi readme.txt
+>>> This is a test.
+
+git status 				//查看当前git仓库的状态
+>>> 2 files in untracked status
+
+git add wenyu.txt readme.txt
+	
+git status
+>>> Changes to be committed
+
+git reset HEAD readme.txt		//to unstage
+
+现在为commit做好了准备，可以使用
+git diff -cached 查看缓存区那些文件被修改了。输入q才可以退出。
+如果没有-cached参数，git diff会显示当前所有做的但没有加入到索引里的修改。
+如果要做进一步的修改，就继续做，做完后就把新修改的文件加入到缓存区。
+
+git commit -m "add 2 files"			//-m添加本次修改的注释
+
+git commit -a -m "add 2 files"		//-a 将所有没有加到缓存区的修改也一起提交，但-a不会添加新建的文件
+
+git rm --cached <file> 				//to unstage files
+
+git status
+
+3. Clone a repository
+I've created a repository called EngRepo in github.com。
+git clone https://github.com/wenyuc/EngRepo
+
+cd EngRepo/
+ls -la
+>>> README.md
+
+git add vocabulary.txt
+git commit -m "initial file vocabulary.txt"
+
+git push		//to publish local commits
+
+
+4. Branch and Merge
+
+git branch wenyu_branch			//create a branch named wenyu_branch
+
+git branch	-v		//查看当前的分支列表，以及目前的开发环境在哪个分支上
+*标识当前工作在哪个分支下。
+
+git checkout <<branch name>>		//切换到其他分支
+git checkout wenyu_branch
+echo "update" >> wenyu.txt
+git status
+git add wenyu.txt					// to update what will be updated
+	git checkout -- <file> 			// to discard changes in working directory
+git commit -m "update wenyu.txt"
+cat wenyu.txt
+git checkout master
+cat wenyu.txt
+echo "update again" >> readme.txt
+git status
+git add readme.txt
+git commit -m "update readme.txt on master"
+cat readme.txt
+
+merge
+git checkout master
+git merge -m "merge wenyu_branch to master" wenyu_branch
+
+如果在master上合并失败显示有冲突，
+git diff
+可以看到冲突的内容都被添加到了master上的文件中
+
+用vi编辑去掉git自动产生标志冲突的<<<<<<等符号后，根据需要保留，保存。
+git add <file>
+git commit -m "..."
+提交合并后的内容，这个过程是手动解决冲突的流程。
+
+完成合并后，不再需要分支时，可以使用删除命令
+git branch -d wenyu_branch
+该命令只能删除那些已经被当前分支合并的分支，如果强制删除某分支
+git branch -D wenyu_branch
+
+撤销一个合并
+git reset --hard HEAD^
+
+日志
+1.查看日志
+
+git log命令可以显示所有的提交(commit)：
+
+$ git log
+						
+
+如果提交的历史纪录很长，回车会逐步显示，输入q可以退出。
+
+git log有很多选项，可以使用git help log查看，例如下面的命令就是找出所有从"v2.5"开始在fs目录下的所有Makefile的修改：
+
+$ git log v2.5.. Makefile fs/
+
+Git会根据git log命令的参数，按时间顺序显示相关的提交(commit)。
+2.日志统计
+
+如果用--stat选项使用'git log',它会显示在每个提交(commit)中哪些文件被修改了, 这些文件分别添加或删除了多少行内容，这个命令相当于打印详细的提交记录：
+
+$ git log --stat
+								
+
+3.格式化日志
+
+你可以按你的要求来格式化日志输出。--pretty 参数可以使用若干表现格式，如oneline:
+
+$ git log --pretty=oneline
+						
+
+或者你也可以使用 short 格式:
+
+$ git log --pretty=short
+								
+
+你也可用medium,full,fuller,email 或raw。如果这些格式不完全符合你的需求，你也可以用--pretty=format参数定义格式。
+
+--graph 选项可以可视化你的提交图(commit graph)，会用ASCII字符来画出一个很漂亮的提交历史(commit history)线：
+
+$ git log --graph --pretty=oneline
+						
+
+4.日志排序
+
+日志记录可以按不同的顺序来显示。如果你要指定一个特定的顺序，可以为git log命令添加顺序参数。
+
+按默认情况，提交会按逆时间顺序显示，可以指定--topo-order参数，让提交按拓扑顺序来显示(就是子提交在它们的父提交前显示):
+
+$ git log --pretty=format:'%h : %s' --topo-order --graph
+
+你也可以用 --reverse参数来逆向显示所有提交日志。
+
+===.gitingore===
+
+.gitignore 配置文件用于配置不需要加入版本管理的文件，配置好该文件可以为我们的版本管理带来很大的便利，
+对于.gitignore配置文件是按行从上到下进行规则匹配的。如果前面的规则匹配的范围更大，后面的规则不会生效。
+
+1. fd1/* 
+忽略目录fd1下的全部内容。不管是根目录下的/fd1/目录，还是某个子目录/child/fd1/目录都会被忽略
+2. /fd1/*
+忽略根目录下的/fd1/目录的全部内容
+3. 
+/*
+!.gitignore
+!/fw/bin
+!/fw/sf
+忽略全部内容，但是不忽略.gitignore， /fw/bin/, /fw/sf/目录。
+
+
+=== vi usage ===
+1. 跳到指定行 
+:$ 跳到文件最后一行
+：0 or :1 跳到文件第一行
+
+命令模式下
+$跳到本行最后一个字符； 0跳到本行第一格字符
+gg跳到文件第一行， Shift+g跳到文件最后一行
+
+2. 打开文件显示行号
+: nu			//显示当前行号
+: set nu		//显示所有行号
+vi edit ~/.vimrc			insert a line "set nu" (no quota)
+UBUNTU vi config file /etc/vim/vimrc
+Fedora vi config file /etc/vimrc
+Red Hat Linux vi config file /etc/vimrc  insert a line "set nu" (no quota)
+
