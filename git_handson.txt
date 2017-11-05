@@ -213,6 +213,14 @@ $ git log --pretty=format:'%h : %s' --topo-order --graph
 !/fw/sf
 忽略全部内容，但是不忽略.gitignore， /fw/bin/, /fw/sf/目录。
 
+=== 1. How to delete a local repository ===
+Delete the .git directory in the root-directory of your repository if you only want to delete the
+git-related data (branches, versions, etc).
+
+If you want to delete everything (code, git-data, etc) just delete the whole directory.
+
+In GitHub, under your repository name, click Settings.
+Under Danger Zone, click Delete this repository.
 
 === vi usage ===
 1. 跳到指定行 
