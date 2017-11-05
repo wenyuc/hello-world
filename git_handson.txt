@@ -1,4 +1,5 @@
-git bash
+https://github.com		wenyuc/cwy2251^
+run git bash
 
 git config --global user.name "wenyu"
 
@@ -13,7 +14,7 @@ ls -la
 cat .gitconfig
 
 2. Repository
-简单理解为一个目录，这个目录里面的所有文件都可以被Git管理起来。
+It's a folder, in which the files are managed by git.
 
 2.1 Create a Repository
 cd f:/www
@@ -29,8 +30,8 @@ ls -la
 >>> ../
 >>> .git/
 
-目录下会有一个名叫.git 的目录被创建，这意味着一个仓库被初始化了。
-可以进入到.git目录查看下有哪些内容。
+A .git subfolder was created in the repository (folder) that means a repository was initialized.
+Go to .git subfolder to check the content.
 
 2.2 Use Repository
 工作区：就是你在电脑上看到的目录，比如目录下wenyuGit里的文件(.git隐藏目录版本库除外)。
@@ -91,6 +92,8 @@ git commit -m "initial file vocabulary.txt"
 
 git push		//to publish local commits
 
+git push --set-upstream origin home_branch //to push the current branch and set the remote as upstream.
+				//Branch home_branch set up to track remote branch home_branch from 'origin'.
 
 4. Branch and Merge
 
@@ -119,6 +122,8 @@ merge
 git checkout master
 git merge -m "merge wenyu_branch to master" wenyu_branch
 
+About pull_request, refer https://guides.github.com/activities/hello-world/
+
 如果在master上合并失败显示有冲突，
 git diff
 可以看到冲突的内容都被添加到了master上的文件中
@@ -127,6 +132,11 @@ git diff
 git add <file>
 git commit -m "..."
 提交合并后的内容，这个过程是手动解决冲突的流程。
+
+
+when the differences are merged in github, pull it to local Repository
+git pull --all
+
 
 完成合并后，不再需要分支时，可以使用删除命令
 git branch -d wenyu_branch
