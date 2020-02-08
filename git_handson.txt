@@ -1,14 +1,46 @@
-https://github.com		wenyuc/cwy2251^
-run git bash
+﻿https://github.com		wenyuc/cwy225407   chenwenyu077@live.com
+https://gitee.com	wenyuc/cwy225 chenwenyu077@live.com
+
+1. run git bash
 
 git config --global user.name "wenyu"
-
 git config --global user.email chenwenyu077@live.com
-
 git config --global color.ui auto
+git config --global core.editor emacs
+git config --global merge.tool vimdiff
+
+These config parameters are saved in three places: 
+- /etc/gitconfig   for ALL USERS configuration --system option. 
+- ~/.gitconfig	   for CURRENT USER configuration --global option
+- ~/<repo>/.git/config 	for CURRENT REPOSITORY. The parameters in ~/.git/config will cover /etc/gitconfig same-name parameters.
+
+$ git config --list
+diff.astextplain.textconv=astextplain
+filter.lfs.clean=git-lfs clean -- %f
+filter.lfs.smudge=git-lfs smudge -- %f
+filter.lfs.process=git-lfs filter-process
+filter.lfs.required=true
+http.sslbackend=openssl
+http.sslcainfo=C:/Program Files/Git/mingw64/ssl/certs/ca-bundle.crt
+core.autocrlf=true
+core.fscache=true
+core.symlinks=true
+core.editor="C:\\Program Files (x86)\\Notepad++\\notepad++.exe" -multiInst -notabbar -nosession -noPlugin
+credential.helper=manager
+user.name=wenyuc
+user.email=chenwenyu077@live.com
+color.ui=auto
+core.editor=emacs
+merge.tool=vimdiff
+
+If have the same names, the git will use the last configuration.
+$ git config core.editor
+emacs
+
+
 #enable helpful colorization of command line output
 
-ls -la
+ls -lat
 .gitconfig
 
 cat .gitconfig
@@ -64,7 +96,11 @@ git add wenyu.txt readme.txt
 git status
 >>> Changes to be committed
 
-git reset HEAD readme.txt		//to unstage
+if you want to discard the change to a file so far
+  git reset --hard head
+  git checkout -- readme.txt
+
+  git reset HEAD readme.txt		//to unstage
 
 现在为commit做好了准备，可以使用
 git diff -cached 查看缓存区那些文件被修改了。输入q才可以退出。
